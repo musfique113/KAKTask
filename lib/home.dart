@@ -88,10 +88,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void navigateEditNotePage(Map item) {
-    final route = MaterialPageRoute(builder: (context) => AddNotes(todo : item),);
-    Navigator.push(context, route);
+  Future<void> navigateEditNotePage(Map item) async {
+    final route = MaterialPageRoute(builder: (context) => AddNotes(todo: item));
+    await Navigator.push(context, route);
+    setState(() {
+      isLoading = true;
+    });
+    fetchTodo();
   }
+
 
   Future<void> navigateAddNotePage() async{
     final route = MaterialPageRoute(builder: (context) => AddNotes(),);

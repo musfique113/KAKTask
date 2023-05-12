@@ -6,7 +6,8 @@ import 'package:http/http.dart' as http;
 
 class AddNotes extends StatefulWidget {
   final Map? todo;
-  const AddNotes({super.key,this.todo});
+
+  const AddNotes({super.key, this.todo});
 
   @override
   State<AddNotes> createState() => _AddNotesState();
@@ -15,14 +16,14 @@ class AddNotes extends StatefulWidget {
 class _AddNotesState extends State<AddNotes> {
   TextEditingController textEditingController = TextEditingController();
   TextEditingController descriptionEditingController = TextEditingController();
-  bool isEdit  = false;
+  bool isEdit = false;
 
   @override
   void initState() {
     final todo = widget.todo;
     // TODO: implement initState
     super.initState();
-    if(widget.todo != null){
+    if (widget.todo != null) {
       isEdit = true;
       final title = todo!['title'];
       final description = todo!['description'];
@@ -36,8 +37,7 @@ class _AddNotesState extends State<AddNotes> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isEdit? "Edit Note" :
-          'KAKTask Add note here',
+          isEdit ? "Edit Note" : 'KAKTask Add note here',
           style: TextStyle(
             color: Colors.white,
             fontSize: 28,
@@ -76,14 +76,47 @@ class _AddNotesState extends State<AddNotes> {
           SizedBox(
             height: 25,
           ),
-          ElevatedButton(onPressed: isEdit ? updateData : submitData, child: Text(
-              isEdit ? 'Update' : "Confirm"))
+          ElevatedButton(
+              onPressed: isEdit ? updateData : submitData,
+              child: Text(isEdit ? 'Update' : "Confirm"))
         ],
       ),
     );
   }
 
-  Future<void> updateData() async {}
+  Future<void> updateData() async {
+    final todo = widget.todo;
+    if(todo == null){
+      print("You cant call updateData with out todo data");
+      return;
+    }
+    final id = todo["_id"];
+    final title = textEditingController.text;
+    final description = descriptionEditingController.text;
+    //getting data from API
+    final body = {
+      "title": title,
+      "description": description,
+      "is_completed": false
+    };
+
+    //submitung updated data
+    final url = "https://api.nstack.in/v1/todos/$id";
+    final uri = Uri.parse(url);
+    final response = await http.put(uri,
+        body: jsonEncode(body), headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      print("Request send successfully");
+      showStatusMessageIfSuccess("Updated successfully");
+    } else {
+      print("Request send failure");
+      showStatusMessageIfFailed("Request send failure");
+      print(response.statusCode);
+    }
+  }
+
+
 
   Future<void> submitData() async {
     final title = textEditingController.text;
@@ -94,6 +127,8 @@ class _AddNotesState extends State<AddNotes> {
       "description": description,
       "is_completed": false
     };
+
+    //submitting data
     final url = "https://api.nstack.in/v1/todos";
     final uri = Uri.parse(url);
     final response = await http.post(uri,
@@ -112,16 +147,25 @@ class _AddNotesState extends State<AddNotes> {
   }
 
   //let user notify about the process status
-  void showStatusMessageIfSuccess(String status){
-    final snackBar = SnackBar(content: Text(status, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-      backgroundColor: Colors.green,);
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-  void showStatusMessageIfFailed(String status){
-    final snackBar = SnackBar(content: Text(status, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-    backgroundColor: Colors.redAccent,);
+  void showStatusMessageIfSuccess(String status) {
+    final snackBar = SnackBar(
+      content: Text(
+        status,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.green,
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-
+  void showStatusMessageIfFailed(String status) {
+    final snackBar = SnackBar(
+      content: Text(
+        status,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.redAccent,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }
