@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kaktask/addNotes.dart';
 import 'home.dart';
 
 void main() {
@@ -13,8 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: '',
+      theme: ThemeData.dark(),
       home: HomePage(),
     );
   }

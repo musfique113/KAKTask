@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List items = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -45,18 +46,41 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: fetchTodo,
-        child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              final item = items[index] as Map;
-              return ListTile(
-                leading: CircleAvatar(child: Text('${index + 1}')),
-                title: Text(item["title"]),
-                subtitle: Text(item["description"]),
-              );
-            }),
+      body: Visibility(
+        visible: isLoading,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+        replacement: RefreshIndicator(
+          onRefresh: fetchTodo,
+          child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index] as Map;
+                return ListTile(
+                  leading: CircleAvatar(child: Text('${index + 1}')),
+                  title: Text(item["title"]),
+                  subtitle: Text(item["description"]),
+                  trailing:PopupMenuButton(
+                    onSelected: (value){
+                      if(value == 'edit'){
+
+
+                      }else if (value == 'delete'){
+
+                      }
+                    },
+                    itemBuilder: (context){
+                      return[
+                        PopupMenuItem(child: Text("Edit"),value: 'edit',
+                        ),
+                        PopupMenuItem(child: Text("Delete"),value: 'delete',)
+                      ];
+                    },
+                  ),
+                );
+              }),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -83,5 +107,9 @@ class _HomePageState extends State<HomePage> {
         items = result;
       });
     } else {}
+
+    setState(() {
+      isLoading = false;
+    });
   }
 }
