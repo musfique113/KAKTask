@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AddNotes extends StatefulWidget {
-  const AddNotes({Key? key}) : super(key: key);
+  final Map? todo;
+  const AddNotes({super.key,this.todo});
 
   @override
   State<AddNotes> createState() => _AddNotesState();
@@ -14,12 +15,23 @@ class AddNotes extends StatefulWidget {
 class _AddNotesState extends State<AddNotes> {
   TextEditingController textEditingController = TextEditingController();
   TextEditingController descriptionEditingController = TextEditingController();
+  bool isEdit  = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if(widget.todo != null){
+      isEdit = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
+          isEdit? "Edit Note" :
           'KAKTask Add note here',
           style: TextStyle(
             color: Colors.white,
@@ -59,11 +71,14 @@ class _AddNotesState extends State<AddNotes> {
           SizedBox(
             height: 25,
           ),
-          ElevatedButton(onPressed: submitData, child: Text("Confirm"))
+          ElevatedButton(onPressed: isEdit ? updateData : submitData, child: Text(
+              isEdit ? 'Update' : "Confirm"))
         ],
       ),
     );
   }
+
+  Future<void> updateData() async {}
 
   Future<void> submitData() async {
     final title = textEditingController.text;

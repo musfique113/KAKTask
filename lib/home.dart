@@ -57,26 +57,24 @@ class _HomePageState extends State<HomePage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index] as Map;
-                final id = item['_id']as String;
+                final id = item['_id'] as String;
                 return ListTile(
                   leading: CircleAvatar(child: Text('${index + 1}')),
                   title: Text(item["title"]),
                   subtitle: Text(item["description"]),
-                  trailing:PopupMenuButton(
-                    onSelected: (value){
-                      if(value == 'edit'){
-
-
-                      }else if (value == 'delete'){
+                  trailing: PopupMenuButton(
+                    onSelected: (value) {
+                      if (value == 'edit') {
+                        navigateEditNotePage(item);
+                      } else if (value == 'delete') {
                         deleteById(id);
-
                       }
                     },
-                    itemBuilder: (context){
-                      return[
-                        PopupMenuItem(child: Text("Edit"),value: 'edit',
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(child: Text("Edit"), value: 'edit',
                         ),
-                        PopupMenuItem(child: Text("Delete"),value: 'delete',)
+                        PopupMenuItem(child: Text("Delete"), value: 'delete',)
                       ];
                     },
                   ),
@@ -85,18 +83,24 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => AddNotes()));
-
-            //Navigator.push(context,MaterialPageRoute(builder: (context) =>Category(About: navBarItem[index]))
-          },
+          onPressed: navigateAddNotePage,
           label: Text("Add Task")),
     );
   }
 
-  // void navigateAddNotePage() {
-  // }
+  void navigateEditNotePage(Map item) {
+    final route = MaterialPageRoute(builder: (context) => AddNotes(todo : item),);
+    Navigator.push(context, route);
+  }
+
+  Future<void> navigateAddNotePage() async{
+    final route = MaterialPageRoute(builder: (context) => AddNotes(),);
+    await Navigator.push(context, route);
+    setState(() {
+      isLoading = true;
+    });
+    fetchTodo();
+  }
 
   Future<void> fetchTodo() async {
     final url = "https://api.nstack.in/v1/todos?page=1&limit=10";
@@ -109,28 +113,31 @@ class _HomePageState extends State<HomePage> {
         items = result;
       });
     } else {}
-
     setState(() {
       isLoading = false;
     });
   }
 
-  Future<void>  deleteById(String id) async{
-    final url  = "https://api.nstack.in/v1/todos/$id";
+  Future<void> deleteById(String id) async {
+    final url = "https://api.nstack.in/v1/todos/$id";
     final uri = Uri.parse(url);
     final response = await http.delete(uri);
-    if(response.statusCode == 200){
-      final filteredItems =items.where((element) => element['_id'] != id ).toList();
+    if (response.statusCode == 200) {
+      final filteredItems = items.where((element) => element['_id'] != id)
+          .toList();
       setState(() {
         items = filteredItems;
-
       });
-
-    }else{
-
+    } else {
+      showStatusMessageIfFailed('Cannot delete');
     }
+  }
 
-
+  void showStatusMessageIfFailed(String status) {
+    final snackBar = SnackBar(content: Text(status,
+      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+      backgroundColor: Colors.redAccent,);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
 }
