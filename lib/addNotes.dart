@@ -19,10 +19,15 @@ class _AddNotesState extends State<AddNotes> {
 
   @override
   void initState() {
+    final todo = widget.todo;
     // TODO: implement initState
     super.initState();
     if(widget.todo != null){
       isEdit = true;
+      final title = todo!['title'];
+      final description = todo!['description'];
+      textEditingController.text = title;
+      descriptionEditingController.text = description;
     }
   }
 
