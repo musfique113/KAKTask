@@ -120,7 +120,11 @@ class _HomePageState extends State<HomePage> {
     final uri = Uri.parse(url);
     final response = await http.delete(uri);
     if(response.statusCode == 200){
-      items =
+      final filteredItems =items.where((element) => element['_id'] != id ).toList();
+      setState(() {
+        items = filteredItems;
+
+      });
 
     }else{
 
