@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index] as Map;
+                final id = item['_id']as String;
                 return ListTile(
                   leading: CircleAvatar(child: Text('${index + 1}')),
                   title: Text(item["title"]),
@@ -67,6 +68,7 @@ class _HomePageState extends State<HomePage> {
 
 
                       }else if (value == 'delete'){
+                        deleteById(id);
 
                       }
                     },
@@ -112,4 +114,19 @@ class _HomePageState extends State<HomePage> {
       isLoading = false;
     });
   }
+
+  Future<void>  deleteById(String id) async{
+    final url  = "https://api.nstack.in/v1/todos/$id";
+    final uri = Uri.parse(url);
+    final response = await http.delete(uri);
+    if(response.statusCode == 200){
+      items =
+
+    }else{
+
+    }
+
+
+  }
+
 }
