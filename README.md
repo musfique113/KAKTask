@@ -1,4 +1,6 @@
 # KAK Task
+[![wakatime](https://wakatime.com/badge/user/18368562-fe00-4dd1-a78f-9403210fea47/project/d348fd30-3471-4a9f-b6de-ff126dc03175.svg)](https://wakatime.com/@musfique113/projects/equnlnvhkt?start=2023-05-07&end=2023-05-13)
+
 
 KAK Task is a simple Flutter todo app that helps users keep track of their daily tasks. This app is built using Flutter framework and utilizes REST API from https://api.nstack.in/#/Todo/ to store and retrieve user's tasks.
 
