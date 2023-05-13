@@ -53,38 +53,51 @@ class _HomePageState extends State<HomePage> {
         ),
         replacement: RefreshIndicator(
           onRefresh: fetchTodo,
-          child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index] as Map;
-                final id = item['_id'] as String;
-                return ListTile(
-                  leading: CircleAvatar(child: Text('${index + 1}')),
-                  title: Text(item["title"]),
-                  subtitle: Text(item["description"]),
-                  trailing: PopupMenuButton(
-                    onSelected: (value) {
-                      if (value == 'edit') {
-                        navigateEditNotePage(item);
-                      } else if (value == 'delete') {
-                        deleteById(id);
-                      }
-                    },
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem(child: Text("Edit"), value: 'edit',
-                        ),
-                        PopupMenuItem(child: Text("Delete"), value: 'delete',)
-                      ];
-                    },
-                  ),
-                );
-              }),
+          child: Visibility(
+            visible: items.isNotEmpty,
+            replacement: Center(
+              child: Text("No Task Available",style: Theme.of(context).textTheme.headlineMedium,),
+            ),
+            child: ListView.builder(
+                itemCount: items.length,
+                padding: EdgeInsets.all(10),
+                itemBuilder: (context, index) {
+                  final item = items[index] as Map;
+                  final id = item['_id'] as String;
+                  return Card(
+                    child: ListTile(
+                      leading: CircleAvatar(child: Text('${index + 1}')),
+                      title: Text(item["title"]),
+                      subtitle: Text(item["description"]),
+                      trailing: PopupMenuButton(
+                        onSelected: (value) {
+                          if (value == 'edit') {
+                            navigateEditNotePage(item);
+                          } else if (value == 'delete') {
+                            deleteById(id);
+                          }
+                        },
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem(
+                              child: Text("Edit"),
+                              value: 'edit',
+                            ),
+                            PopupMenuItem(
+                              child: Text("Delete"),
+                              value: 'delete',
+                            )
+                          ];
+                        },
+                      ),
+                    ),
+                  );
+                }),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: navigateAddNotePage,
-          label: Text("Add Task")),
+          onPressed: navigateAddNotePage, label: Text("Add Task")),
     );
   }
 
@@ -97,9 +110,10 @@ class _HomePageState extends State<HomePage> {
     fetchTodo();
   }
 
-
-  Future<void> navigateAddNotePage() async{
-    final route = MaterialPageRoute(builder: (context) => AddNotes(),);
+  Future<void> navigateAddNotePage() async {
+    final route = MaterialPageRoute(
+      builder: (context) => AddNotes(),
+    );
     await Navigator.push(context, route);
     setState(() {
       isLoading = true;
@@ -128,8 +142,8 @@ class _HomePageState extends State<HomePage> {
     final uri = Uri.parse(url);
     final response = await http.delete(uri);
     if (response.statusCode == 200) {
-      final filteredItems = items.where((element) => element['_id'] != id)
-          .toList();
+      final filteredItems =
+          items.where((element) => element['_id'] != id).toList();
       setState(() {
         items = filteredItems;
       });
@@ -139,10 +153,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void showStatusMessageIfFailed(String status) {
-    final snackBar = SnackBar(content: Text(status,
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-      backgroundColor: Colors.redAccent,);
+    final snackBar = SnackBar(
+      content: Text(
+        status,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.redAccent,
+    );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 }

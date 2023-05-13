@@ -1,16 +1,31 @@
-# kaktask
+# KAK Task
 
-A new Flutter project.
+KAK Task is a simple Flutter todo app that helps users keep track of their daily tasks. This app is built using Flutter framework and utilizes REST API from https://api.nstack.in/ to store and retrieve user's tasks.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- Add new tasks
+- Edit existing tasks
+- Delete tasks
+- View all tasks
 
-A few resources to get you started if this is your first Flutter project:
+## Requirements
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- http: ^0.13.6 package
+- Internet connection to communicate with API
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Setup
+
+1. Clone the repository to your local machine using `git clone <repository-url>`
+2. Run `flutter pub get` to install dependencies
+3. Create an account on https://api.nstack.in/ and obtain an API key
+4. Update the `apiKey` variable in `lib/utils/constants.dart` with your API key
+5. Update the `apiBaseUrl` variable in `lib/utils/constants.dart` with the API URL https://api.nstack.in/#/Todo/
+6. Run the app on a device or emulator using `flutter run`
+
+## Screenshots
+
+![KAK Task Screenshot 1](https://user-images.githubusercontent.com/12345678/12345678/12345678.png)
+
+![KAK Task Screenshot 2](https://user-images.githubusercontent.com/12345678/12345678/12345678.png)
+
