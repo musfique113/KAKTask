@@ -1,3 +1,6 @@
+<h1 align="center">
+  <img src="https://github.com/musfique113/KAKTask/assets/53111065/8d9f5d8c-2322-4202-9b5b-d30212f8ba3e" width="200" height="200">
+</h1>
 # KAK Task
 [![wakatime](https://wakatime.com/badge/user/18368562-fe00-4dd1-a78f-9403210fea47/project/d348fd30-3471-4a9f-b6de-ff126dc03175.svg)](https://wakatime.com/@musfique113/projects/equnlnvhkt?start=2023-05-07&end=2023-05-13)
 
