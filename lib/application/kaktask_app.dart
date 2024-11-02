@@ -23,7 +23,6 @@ class KakTaskApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: '',
-        theme: ThemeData.dark(),
         home: const SplashScreen(),
       ),
     );

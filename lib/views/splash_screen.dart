@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaktask/application/app_router.dart';
-import 'package:kaktask/views/created_task_screen.dart';
+import 'package:kaktask/views/all_tasks_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 1)).then(
       (value) => AppRouter.push(
         context,
-        CreatedTaskPage(),
+        const AllTaskScreen(),
       ),
     );
   }
