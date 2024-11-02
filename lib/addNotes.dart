@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,7 +37,7 @@ class _AddNotesState extends State<AddNotes> {
       appBar: AppBar(
         title: Text(
           isEdit ? "Edit Note" : 'KAKTask Add note here',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -57,23 +56,23 @@ class _AddNotesState extends State<AddNotes> {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(14),
+        padding: const EdgeInsets.all(14),
         children: [
           TextField(
             controller: textEditingController,
-            decoration: InputDecoration(hintText: "Task title"),
+            decoration: const InputDecoration(hintText: "Task title"),
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           TextField(
             controller: descriptionEditingController,
-            decoration: InputDecoration(hintText: "Task Description"),
+            decoration: const InputDecoration(hintText: "Task Description"),
             keyboardType: TextInputType.multiline,
             minLines: 5,
             maxLines: 10,
           ),
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           ElevatedButton(
@@ -151,7 +150,7 @@ class _AddNotesState extends State<AddNotes> {
     final snackBar = SnackBar(
       content: Text(
         status,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       backgroundColor: Colors.green,
     );
@@ -162,7 +161,7 @@ class _AddNotesState extends State<AddNotes> {
     final snackBar = SnackBar(
       content: Text(
         status,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       backgroundColor: Colors.redAccent,
     );

@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kaktask/addNotes.dart';
 import 'package:http/http.dart' as http;
+import 'package:kaktask/application/services/network_services/network_executor.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key, required this.name}) : super(key: key);
+
+  final String name;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'KAKTask',
           style: TextStyle(
             color: Colors.white,
@@ -48,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Visibility(
         visible: isLoading,
-        child: Center(
+        child: const Center(
           child: CircularProgressIndicator(),
         ),
         replacement: RefreshIndicator(
@@ -56,11 +59,14 @@ class _HomePageState extends State<HomePage> {
           child: Visibility(
             visible: items.isNotEmpty,
             replacement: Center(
-              child: Text("No Task Available",style: Theme.of(context).textTheme.headlineMedium,),
+              child: Text(
+                "No Task Available ${widget.name}",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             child: ListView.builder(
                 itemCount: items.length,
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 itemBuilder: (context, index) {
                   final item = items[index] as Map;
                   final id = item['_id'] as String;
@@ -79,11 +85,11 @@ class _HomePageState extends State<HomePage> {
                         },
                         itemBuilder: (context) {
                           return [
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               child: Text("Edit"),
                               value: 'edit',
                             ),
-                            PopupMenuItem(
+                            const PopupMenuItem(
                               child: Text("Delete"),
                               value: 'delete',
                             )
@@ -97,7 +103,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: navigateAddNotePage, label: Text("Add Task")),
+          onPressed: navigateAddNotePage, label: const Text("Add Task")),
     );
   }
 
@@ -112,7 +118,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> navigateAddNotePage() async {
     final route = MaterialPageRoute(
-      builder: (context) => AddNotes(),
+      builder: (context) => const AddNotes(),
     );
     await Navigator.push(context, route);
     setState(() {
@@ -122,10 +128,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> fetchTodo() async {
+    NetworkExecutor networkExecutor = NetworkExecutor();
+
     final url = "https://api.nstack.in/v1/todos?page=1&limit=10";
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
+
+    final response = await networkExecutor.getRequest(url: url);
     if (response.statusCode == 200) {
+      print('Data: ${response.body}');
       final json = jsonDecode(response.body) as Map;
       final result = json['items'];
       setState(() {
@@ -156,7 +165,8 @@ class _HomePageState extends State<HomePage> {
     final snackBar = SnackBar(
       content: Text(
         status,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       backgroundColor: Colors.redAccent,
     );
