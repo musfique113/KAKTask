@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kaktask/application/app_router.dart';
 import 'package:kaktask/data/entities/created_task.dart';
+import 'package:kaktask/utils/show_snackbar_message.dart';
 import 'package:kaktask/view_model/created_new_task_view_model.dart';
 import 'package:kaktask/view_model/get_created_task_view_model.dart';
 import 'package:kaktask/view_model/update_task_view_model.dart';
@@ -93,7 +94,14 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         (value) {
                           if (value) {
                             _getUpdatedData();
+                            showSnackBarMessage(context, 'Task Updated');
                             AppRouter.pop(context);
+                          } else {
+                            showSnackBarMessage(
+                              context,
+                              updateState.error!.message,
+                              isError: true,
+                            );
                           }
                         },
                       );
@@ -119,7 +127,14 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                         (value) {
                           if (value) {
                             _getUpdatedData();
+                            showSnackBarMessage(context, 'New task added');
                             AppRouter.pop(context);
+                          } else {
+                            showSnackBarMessage(
+                              context,
+                              createTask.error!.message,
+                              isError: true,
+                            );
                           }
                         },
                       );
@@ -131,18 +146,6 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
         ],
       ),
     );
-  }
-
-  void showStatusMessageIfFailed(String status) {
-    final snackBar = SnackBar(
-      content: Text(
-        status,
-        style:
-            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-      backgroundColor: Colors.redAccent,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _getUpdatedData() {
