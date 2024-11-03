@@ -3,8 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TaskSummaryTitle extends StatelessWidget {
   const TaskSummaryTitle({
+    required this.total,
+    required this.completed,
     super.key,
   });
+
+  final int total;
+  final int completed;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,7 @@ class TaskSummaryTitle extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '(1/4) ',
+                    text: '($completed/$total) ',
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
