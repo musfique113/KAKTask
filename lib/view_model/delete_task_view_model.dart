@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kaktask/application/services/network_services/entities/failure.dart';
-import 'package:kaktask/data/entities/created_task.dart';
 import 'package:kaktask/repositories/task_management_repository.dart';
 
-class GetCreatedTaskViewModel with ChangeNotifier {
-  GetCreatedTaskViewModel(this._repository);
+class DeleteTaskViewModel with ChangeNotifier {
+  DeleteTaskViewModel(this._repository);
 
   final TaskManagementRepository _repository;
 
@@ -12,38 +11,31 @@ class GetCreatedTaskViewModel with ChangeNotifier {
 
   bool get loading => _isLoading;
 
-  List<CreatedTask> _createdTasks = [];
-
-  List<CreatedTask> get createdTasks => _createdTasks;
-
   Failure? _failure;
 
   Failure? get error => _failure;
 
-  Future<bool> getCreatedTask({int? limit}) async {
+  Future<bool> deleteTask({
+    required String id,
+  }) async {
     _isLoading = true;
     notifyListeners();
-
-    final response = await _repository.getCreatedTask(limit: limit);
+    final response = await _repository.deleteTask(
+      id: id,
+    );
     return response.fold(
       (error) {
         _failure = error;
-        _createdTasks = [];
         _isLoading = false;
         notifyListeners();
         return false;
       },
-      (tasks) {
-        _createdTasks = tasks;
+      (deleteTask) {
         _failure = null;
         _isLoading = false;
         notifyListeners();
         return true;
       },
     );
-  }
-
-  int get completedTaskCount {
-    return _createdTasks.where((task) => task.isCompleted).length;
   }
 }
