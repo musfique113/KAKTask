@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kaktask/res/widget/toggle_theme_button.dart';
 
 class AllTaskScreen extends StatefulWidget {
   const AllTaskScreen({super.key});
@@ -14,7 +15,6 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(
@@ -137,13 +137,12 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                                 ),
                               ],
                             ),
-                            
                             SvgPicture.asset('assets/icons/delete_icon.svg')
-                            
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    const ThemeToggleWidget()
                   ],
                 ),
               ),
