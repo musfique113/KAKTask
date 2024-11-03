@@ -21,8 +21,8 @@ class EmptyTaskWidget extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/empty_list.png',
-            height: 340,
-            width: 388,
+            height: 320,
+            width: 360,
             color: themeProvider.themeMode == ThemeMode.dark
                 ? Colors.white
                 : Colors.black,

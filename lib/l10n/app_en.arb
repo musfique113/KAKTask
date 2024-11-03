@@ -1,7 +1,11 @@
 {
   "@@locale": "en",
   "todayTask": "Today's tasks",
-  "emptyTask" : "Your Task List is Empty!",
-  "completedTask" : "Completed Tasks",
-  "dontHaveAnyTaskMessage" : "You do not have any active tasks right now, add some task and get things done"
+  "emptyTask": "Your Task List is Empty!",
+  "completedTask": "Completed Tasks",
+  "title": "Title",
+  "description": "Description",
+  "addTask": "ADD TASK",
+  "updateTask": "UPDATE TASK",
+  "dontHaveAnyTaskMessage": "You do not have any active tasks right now, add some task and get things done"
 }

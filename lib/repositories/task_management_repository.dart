@@ -17,6 +17,8 @@ class TaskManagementRepository {
 
   final String _getCreatedTaskUrl = '$baseUrl/todos';
 
+  String _updateAndDeleteTask(String id) => '$baseUrl/todos/$id';
+
   Future<Either<Failure, List<CreatedTask>>> getCreatedTask(
       {int? limit}) async {
     Map<String, dynamic> queryParams = {
@@ -56,7 +58,7 @@ class TaskManagementRepository {
     Map<String, dynamic> data = {
       "title": title,
       "description": description,
-      "is_completed": true
+      "is_completed": false
     };
 
     final NetworkResponse response = await _networkExecutor.postRequest(
@@ -70,6 +72,59 @@ class TaskManagementRepository {
       print('Data: ${response.body}');
     }
     if (response.statusCode == 201) {
+      return Right(Success(response.statusMessage));
+    } else {
+      final errorData = jsonDecode(response.body);
+      return Left(
+        Failure(errorData['message'] ?? 'Unexpected response format'),
+      );
+    }
+  }
+
+  Future<Either<Failure, Success>> updateTask(
+      {required String title,
+      required String id,
+      required String description,
+      required bool isCompleted}) async {
+    Map<String, dynamic> data = {
+      "title": title,
+      "description": description,
+      "is_completed": isCompleted
+    };
+
+    final NetworkResponse response = await _networkExecutor.putRequest(
+      url: _updateAndDeleteTask(id),
+      body: data,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (kDebugMode) {
+      print('Response code: ${response.statusCode}');
+      print('Data: ${response.body}');
+    }
+    if (response.statusCode == 200) {
+      return Right(Success(response.statusMessage));
+    } else {
+      final errorData = jsonDecode(response.body);
+      return Left(
+        Failure(errorData['message'] ?? 'Unexpected response format'),
+      );
+    }
+  }
+
+  Future<Either<Failure, Success>> deleteTask({
+    required String id,
+  }) async {
+    final NetworkResponse response = await _networkExecutor.deleteRequest(
+      url: _updateAndDeleteTask(id),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (kDebugMode) {
+      print('Response code: ${response.statusCode}');
+      print('Data: ${response.body}');
+    }
+    if (response.statusCode == 200) {
       return Right(Success(response.statusMessage));
     } else {
       final errorData = jsonDecode(response.body);

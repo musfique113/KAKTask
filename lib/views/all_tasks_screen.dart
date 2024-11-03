@@ -16,17 +16,10 @@ class AllTaskScreen extends StatefulWidget {
 }
 
 class _AllTaskScreenState extends State<AllTaskScreen> {
-  bool showListView = false;
-
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback(
-      (_) {
-        Provider.of<GetCreatedTaskViewModel>(context, listen: false)
-            .getCreatedTask(limit: 20);
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) => _getUpdatedData());
   }
 
   @override
@@ -45,16 +38,19 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
           replacement: const EmptyTaskWidget(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              children: [
-                TaskSummaryTitle(
-                  completed: state.completedTaskCount,
-                  total: state.createdTasks.length,
-                ),
-                const SizedBox(height: 34),
-                Expanded(
-                  child: ListView.separated(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 68),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TaskSummaryTitle(
+                    completed: state.completedTaskCount,
+                    total: state.createdTasks.length,
+                  ),
+                  const SizedBox(height: 34),
+                  ListView.separated(
                     primary: false,
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     reverse: true,
                     itemBuilder: (context, index) => TaskCardWidget(
@@ -63,9 +59,9 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 8),
                     itemCount: state.createdTasks.length,
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         );
@@ -98,5 +94,10 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
         return const AddTaskBottomSheet();
       },
     );
+  }
+
+  void _getUpdatedData() {
+    Provider.of<GetCreatedTaskViewModel>(context, listen: false)
+        .getCreatedTask(limit: 20);
   }
 }

@@ -31,6 +31,7 @@ class GlobalThemeData {
   static AppBarTheme _appBarTheme() {
     return const AppBarTheme(
       backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
       iconTheme: IconThemeData(
         color: themeColor,
       ),
