@@ -24,13 +24,13 @@ class GlobalThemeData {
         elevatedButtonTheme: _elevatedButtonThemeData,
         floatingActionButtonTheme: _floatingActionButtonThemeData,
         fontFamily: 'Poppins',
+        inputDecorationTheme: _inputDecorationTheme,
         appBarTheme: _appBarTheme());
   }
 
   static AppBarTheme _appBarTheme() {
     return const AppBarTheme(
       backgroundColor: Colors.transparent,
-      toolbarHeight: 40,
       iconTheme: IconThemeData(
         color: themeColor,
       ),
@@ -81,6 +81,31 @@ class GlobalThemeData {
         color: Colors.white,
         fontFamily: 'Poppins',
       ),
+    ),
+  );
+
+  static final InputDecorationTheme _inputDecorationTheme =
+      InputDecorationTheme(
+    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: themeColor),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: themeColor),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: themeColor),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: themeColor),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(color: Colors.red),
     ),
   );
 
