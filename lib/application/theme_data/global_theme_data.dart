@@ -22,6 +22,7 @@ class GlobalThemeData {
       highlightColor: Colors.transparent,
       focusColor: focusColor,
       elevatedButtonTheme: _elevatedButtonThemeData,
+      floatingActionButtonTheme: _floatingActionButtonThemeData,
       fontFamily: 'Poppins',
     );
   }
@@ -70,6 +71,17 @@ class GlobalThemeData {
         color: Colors.white,
         fontFamily: 'Poppins',
       ),
+    ),
+  );
+
+  static final FloatingActionButtonThemeData _floatingActionButtonThemeData =
+      FloatingActionButtonThemeData(
+    backgroundColor: themeColor,
+    iconSize: 24,
+    elevation: 0,
+    foregroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10),
     ),
   );
 }

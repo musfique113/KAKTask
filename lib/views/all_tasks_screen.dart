@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaktask/res/widget/toggle_theme_button.dart';
+import 'package:kaktask/view_model/language_provider.dart';
+import 'package:provider/provider.dart';
 
 class AllTaskScreen extends StatefulWidget {
   const AllTaskScreen({super.key});
@@ -14,6 +17,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
@@ -59,7 +63,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     Row(
@@ -69,7 +73,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Today\'s Tasks',
+                              AppLocalizations.of(context).todayTask,
                               style: Theme.of(context)
                                   .textTheme
                                   .displayLarge!
@@ -78,7 +82,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                                     fontWeight: FontWeight.w700,
                                   ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
                             Text(
@@ -142,7 +146,13 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                         ),
                       ),
                     ),
-                    const ThemeToggleWidget()
+                    const ThemeToggleWidget(),
+                    ElevatedButton(
+                      onPressed: () => languageProvider.toggleLanguage(),
+                      child: Text(languageProvider.locale.languageCode == 'en'
+                          ? 'Switch to Bengali'
+                          : 'Switch to English'),
+                    ),
                   ],
                 ),
               ),
