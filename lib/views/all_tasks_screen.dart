@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kaktask/res/widget/empty_task_widget.dart';
 import 'package:kaktask/res/widget/toggle_theme_button.dart';
 import 'package:kaktask/view_model/language_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +14,28 @@ class AllTaskScreen extends StatefulWidget {
 }
 
 class _AllTaskScreenState extends State<AllTaskScreen> {
-  bool showListView = false;
+  bool showListView = true;
 
   @override
   Widget build(BuildContext context) {
     final languageProvider = Provider.of<LanguageProvider>(context);
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          const ThemeToggleWidget(),
+          IconButton(
+            icon: Icon(
+              languageProvider.locale.languageCode == 'en'
+                  ? Icons.language
+                  : Icons.language,
+            ),
+            tooltip: languageProvider.locale.languageCode == 'en'
+                ? 'Switch to Bengali'
+                : 'Switch to English',
+            onPressed: () => languageProvider.toggleLanguage(),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         child: const Icon(
@@ -26,38 +43,7 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
         ),
       ),
       body: showListView
-          ? SafeArea(
-              child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/empty_list.png',
-                    height: 340,
-                    width: 388,
-                  ),
-                  Text(
-                    'Your Task List is Empty!',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Text(
-                    'You do not have any active tasks right now, add some task and get things done.',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                          fontSize: 16,
-                        ),
-                  )
-                ],
-              ),
-            ))
+          ? const EmptyTaskWidget()
           : SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -85,15 +71,32 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                             const SizedBox(
                               height: 8,
                             ),
-                            Text(
-                              '(1/4) Completed Tasks',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .displaySmall!
-                                  .copyWith(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: '(1/4) ',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall!
+                                        .copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                   ),
+                                  TextSpan(
+                                    text:
+                                        AppLocalizations.of(context).emptyTask,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall!
+                                        .copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -145,13 +148,6 @@ class _AllTaskScreenState extends State<AllTaskScreen> {
                           ],
                         ),
                       ),
-                    ),
-                    const ThemeToggleWidget(),
-                    ElevatedButton(
-                      onPressed: () => languageProvider.toggleLanguage(),
-                      child: Text(languageProvider.locale.languageCode == 'en'
-                          ? 'Switch to Bengali'
-                          : 'Switch to English'),
                     ),
                   ],
                 ),

@@ -15,15 +15,25 @@ class GlobalThemeData {
 
   static ThemeData _buildThemeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
-      primaryColor: colorScheme.primary,
-      colorScheme: colorScheme,
-      scaffoldBackgroundColor: colorScheme.background,
-      canvasColor: colorScheme.surface,
-      highlightColor: Colors.transparent,
-      focusColor: focusColor,
-      elevatedButtonTheme: _elevatedButtonThemeData,
-      floatingActionButtonTheme: _floatingActionButtonThemeData,
-      fontFamily: 'Poppins',
+        primaryColor: colorScheme.primary,
+        colorScheme: colorScheme,
+        scaffoldBackgroundColor: colorScheme.background,
+        canvasColor: colorScheme.surface,
+        highlightColor: Colors.transparent,
+        focusColor: focusColor,
+        elevatedButtonTheme: _elevatedButtonThemeData,
+        floatingActionButtonTheme: _floatingActionButtonThemeData,
+        fontFamily: 'Poppins',
+        appBarTheme: _appBarTheme());
+  }
+
+  static AppBarTheme _appBarTheme() {
+    return const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      toolbarHeight: 40,
+      iconTheme: IconThemeData(
+        color: themeColor,
+      ),
     );
   }
 
