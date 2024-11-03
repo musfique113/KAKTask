@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:kaktask/application/app_router.dart';
 import 'package:kaktask/data/entities/created_task.dart';
 import 'package:kaktask/view_model/created_new_task_view_model.dart';
 import 'package:kaktask/view_model/get_created_task_view_model.dart';
 import 'package:kaktask/view_model/update_task_view_model.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({
@@ -73,70 +73,60 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
             maxLines: 8,
           ),
           const SizedBox(height: 21),
-          Consumer<CreateNewTaskViewModel>(
-            builder: (context, createState, child) {
-              if (createState.loading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return Consumer<UpdateTaskViewModel>(
+          widget.isEditingMode == true && widget.task != null
+              ? Consumer<UpdateTaskViewModel>(
                   builder: (context, updateState, child) {
-                if (updateState.loading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return ElevatedButton(
-                  onPressed: () {
-                    if (widget.isEditingMode == true && widget.task != null) {
+                  if (updateState.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ElevatedButton(
+                    onPressed: () {
                       updateState
                           .updateTask(
-                        id: widget.task!.sId,
-                        title: _titleTE.text,
-                        description: _descTE.text,
-                        isCompleted: false,
-                      )
-                          .then((value) {
-                        if (value) {
-                          Provider.of<GetCreatedTaskViewModel>(context,
-                                  listen: false)
-                              .getCreatedTask(limit: 20)
-                              .then((value) {
-                            if (value) {
-                              AppRouter.pop(context);
-                            }
-                          });
-                        } else {
-                          showStatusMessageIfFailed('Cannot update task');
-                        }
-                      });
-                    } else {
-                      // Create a new task
-                      createState
+                              id: widget.task!.sId,
+                              title: _titleTE.text,
+                              description: _descTE.text,
+                              isCompleted: false)
+                          .then(
+                        (value) {
+                          if (value) {
+                            _getUpdatedData();
+                            AppRouter.pop(context);
+                          }
+                        },
+                      );
+                    },
+                    child: Text(AppLocalizations.of(context).updateTask),
+                  );
+                })
+              : Consumer<CreateNewTaskViewModel>(
+                  builder: (context, createTask, child) {
+                  if (createTask.loading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ElevatedButton(
+                    onPressed: () {
+                      createTask
                           .createNewTask(
                         title: _titleTE.text,
                         description: _descTE.text,
                       )
-                          .then((value) {
-                        if (value) {
-                          Provider.of<GetCreatedTaskViewModel>(context,
-                                  listen: false)
-                              .getCreatedTask(limit: 20)
-                              .then((value) {
-                            if (value) {
-                              AppRouter.pop(context);
-                            }
-                          });
-                        } else {
-                          showStatusMessageIfFailed('Cannot add task');
-                        }
-                      });
-                    }
-                  },
-                  child: Text(widget.isEditingMode == true
-                      ? AppLocalizations.of(context).updateTask
-                      : AppLocalizations.of(context).addTask),
-                );
-              });
-            },
-          ),
+                          .then(
+                        (value) {
+                          if (value) {
+                            _getUpdatedData();
+                            AppRouter.pop(context);
+                          }
+                        },
+                      );
+                    },
+                    child: Text(AppLocalizations.of(context).addTask),
+                  );
+                }),
           const SizedBox(height: 32),
         ],
       ),
@@ -153,5 +143,10 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       backgroundColor: Colors.redAccent,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  void _getUpdatedData() {
+    Provider.of<GetCreatedTaskViewModel>(context, listen: false)
+        .getCreatedTask(limit: 20);
   }
 }
