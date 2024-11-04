@@ -7,5 +7,16 @@
   "description": "Description",
   "addTask": "ADD TASK",
   "updateTask": "UPDATE TASK",
+  "completedTaskCount": "{x}/{y} ",
+  "@completedTaskCount": {
+    "placeholders": {
+      "x": {
+        "type": "String"
+      },
+      "y": {
+        "type": "String"
+      }
+    }
+  },
   "dontHaveAnyTaskMessage": "You do not have any active tasks right now, add some task and get things done"
 }

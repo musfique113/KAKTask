@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class TaskSummaryTitle extends StatelessWidget {
   const TaskSummaryTitle({
@@ -13,6 +14,14 @@ class TaskSummaryTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).toString();
+    final formattedCompleted = locale == 'bn'
+        ? NumberFormat.decimalPattern('bn').format(completed)
+        : completed.toString();
+    final formattedTotal = locale == 'bn'
+        ? NumberFormat.decimalPattern('bn').format(total)
+        : total.toString();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +40,8 @@ class TaskSummaryTitle extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                text: '($completed/$total) ',
+                text: AppLocalizations.of(context)
+                    .completedTaskCount(formattedCompleted, formattedTotal),
                 style: Theme.of(context).textTheme.displaySmall!.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
