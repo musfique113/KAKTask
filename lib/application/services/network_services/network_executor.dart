@@ -24,7 +24,7 @@ class NetworkExecutor {
 
       return NetworkResponse(
         response.statusCode,
-        response.body,
+        jsonDecode(response.body),
         response.headers,
         response.reasonPhrase ?? 'Unknown status',
       );

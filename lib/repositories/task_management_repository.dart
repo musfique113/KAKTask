@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:kaktask/application/app_configuration/base_url.dart';
@@ -36,7 +34,7 @@ class TaskManagementRepository {
       print('Data: ${response.body}');
     }
     if (response.statusCode == 200) {
-      final List<dynamic> items = jsonDecode(response.body)['items'];
+      final List<dynamic> items = response.body['items'];
       final List<CreatedTask> tasks = items.map((item) {
         if (item is Map<String, dynamic>) {
           final model = CreatedTaskModel.fromJson(item);
@@ -74,7 +72,7 @@ class TaskManagementRepository {
     if (response.statusCode == 201) {
       return Right(Success(response.statusMessage));
     } else {
-      final errorData = jsonDecode(response.body);
+      final errorData = response.body;
       return Left(
         Failure(errorData['message'] ?? 'Unexpected response format'),
       );
@@ -105,7 +103,7 @@ class TaskManagementRepository {
     if (response.statusCode == 200) {
       return Right(Success(response.statusMessage));
     } else {
-      final errorData = jsonDecode(response.body);
+      final errorData = response.body;
       return Left(
         Failure(errorData['message'] ?? 'Unexpected response format'),
       );
@@ -127,7 +125,7 @@ class TaskManagementRepository {
     if (response.statusCode == 200) {
       return Right(Success(response.statusMessage));
     } else {
-      final errorData = jsonDecode(response.body);
+      final errorData = response.body;
       return Left(
         Failure(errorData['message'] ?? 'Unexpected response format'),
       );
