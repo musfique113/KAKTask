@@ -1,25 +1,27 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaktask/application/services/network_services/network_response.dart';
 
 class NetworkExecutor {
+  final bool printHeader = false;
+
   Future<NetworkResponse> _executeRequest(
     Future<http.Response> Function() requestFunction,
   ) async {
     try {
       final response = await requestFunction();
 
-      // Log the response details
       if (kDebugMode) {
-        print('Response Status Code: ${response.statusCode}');
+        log('Response Status Code: ${response.statusCode}');
+      }
+      if (printHeader) {
+        log('Response Headers: ${response.headers}');
       }
       if (kDebugMode) {
-        print('Response Headers: ${response.headers}');
-      }
-      if (kDebugMode) {
-        print('Response Body: ${response.body}');
+        log('Response Body: ${response.body}');
       }
 
       return NetworkResponse(
@@ -30,7 +32,7 @@ class NetworkExecutor {
       );
     } catch (e) {
       if (kDebugMode) {
-        print('Network error: $e');
+        log('Network error: $e');
       }
       return NetworkResponse(
         -1,
@@ -55,16 +57,15 @@ class NetworkExecutor {
       ),
     );
 
-    // Log the request details
     if (kDebugMode) {
-      print('GET Request URL: $uri');
+      log('GET Request URL: $uri');
     }
-    if (kDebugMode) {
-      print('Headers: $headers');
+    if (printHeader) {
+      log('Headers: $headers');
     }
 
     if (kDebugMode) {
-      print('QueryParams: $queryParams');
+      log('QueryParams: $queryParams');
     }
 
     return _executeRequest(() => http.get(uri, headers: headers));
@@ -75,15 +76,14 @@ class NetworkExecutor {
     Map<String, String>? headers,
     Map<String, dynamic>? body,
   }) async {
-    // Log the request details
     if (kDebugMode) {
-      print('POST Request URL: $url');
+      log('POST Request URL: $url');
+    }
+    if (printHeader) {
+      log('Headers: $headers');
     }
     if (kDebugMode) {
-      print('Headers: $headers');
-    }
-    if (kDebugMode) {
-      print('Body: ${jsonEncode(body)}');
+      log('Body: ${jsonEncode(body)}');
     }
 
     return _executeRequest(
@@ -100,15 +100,14 @@ class NetworkExecutor {
     Map<String, String>? headers,
     Map<String, dynamic>? body,
   }) async {
-    // Log the request details
     if (kDebugMode) {
-      print('PUT Request URL: $url');
+      log('PUT Request URL: $url');
+    }
+    if (printHeader) {
+      log('Headers: $headers');
     }
     if (kDebugMode) {
-      print('Headers: $headers');
-    }
-    if (kDebugMode) {
-      print('Body: ${jsonEncode(body)}');
+      log('Body: ${jsonEncode(body)}');
     }
 
     return _executeRequest(
@@ -125,15 +124,14 @@ class NetworkExecutor {
     Map<String, String>? headers,
     Map<String, dynamic>? body,
   }) async {
-    // Log the request details
     if (kDebugMode) {
-      print('PATCH Request URL: $url');
+      log('PATCH Request URL: $url');
+    }
+    if (printHeader) {
+      log('Headers: $headers');
     }
     if (kDebugMode) {
-      print('Headers: $headers');
-    }
-    if (kDebugMode) {
-      print('Body: ${jsonEncode(body)}');
+      log('Body: ${jsonEncode(body)}');
     }
 
     return _executeRequest(
@@ -150,15 +148,14 @@ class NetworkExecutor {
     Map<String, String>? headers,
     Map<String, dynamic>? body,
   }) async {
-    // Log the request details
     if (kDebugMode) {
-      print('DELETE Request URL: $url');
+      log('DELETE Request URL: $url');
+    }
+    if (printHeader) {
+      log('Headers: $headers');
     }
     if (kDebugMode) {
-      print('Headers: $headers');
-    }
-    if (kDebugMode) {
-      print('Body: ${body != null ? jsonEncode(body) : 'No body'}');
+      log('Body: ${body != null ? jsonEncode(body) : 'No body'}');
     }
 
     return _executeRequest(

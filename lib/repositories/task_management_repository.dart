@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:kaktask/application/app_configuration/base_url.dart';
 import 'package:kaktask/application/services/network_services/entities/failure.dart';
@@ -29,10 +28,6 @@ class TaskManagementRepository {
       queryParams: queryParams,
     );
 
-    if (kDebugMode) {
-      print('Response code: ${response.statusCode}');
-      print('Data: ${response.body}');
-    }
     if (response.statusCode == 200) {
       final List<dynamic> items = response.body['items'];
       final List<CreatedTask> tasks = items.map((item) {
@@ -65,10 +60,6 @@ class TaskManagementRepository {
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (kDebugMode) {
-      print('Response code: ${response.statusCode}');
-      print('Data: ${response.body}');
-    }
     if (response.statusCode == 201) {
       return Right(Success(response.statusMessage));
     } else {
@@ -96,10 +87,6 @@ class TaskManagementRepository {
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (kDebugMode) {
-      print('Response code: ${response.statusCode}');
-      print('Data: ${response.body}');
-    }
     if (response.statusCode == 200) {
       return Right(Success(response.statusMessage));
     } else {
@@ -118,10 +105,6 @@ class TaskManagementRepository {
       headers: {'Content-Type': 'application/json'},
     );
 
-    if (kDebugMode) {
-      print('Response code: ${response.statusCode}');
-      print('Data: ${response.body}');
-    }
     if (response.statusCode == 200) {
       return Right(Success(response.statusMessage));
     } else {
